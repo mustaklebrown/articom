@@ -1,4 +1,4 @@
-import { SubscriptionPlan, SubscriptionBillingPeriod } from "@/generated/prisma/enums";
+export { SubscriptionPlan, SubscriptionBillingPeriod } from "@/generated/prisma/enums";
 
 export interface PlanFeature {
   name: string;

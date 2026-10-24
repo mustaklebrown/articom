@@ -16,6 +16,10 @@ import {
   MessageCircle,
   Smartphone,
   Store as StoreIcon,
+  Megaphone,
+  Headphones,
+  Sparkles,
+  PhoneCall,
 } from "lucide-react";
 
 export default async function StorePage(props: {
@@ -46,6 +50,20 @@ export default async function StorePage(props: {
   return (
     <div className="min-h-screen flex flex-col bg-[#F8F8F6]">
       <Navbar />
+
+      {/* BANDEAU PROMOTIONNEL MARKETING (Si configuré par l'artisan Pro / Entreprise) */}
+      {store.promoBanner && (
+        <div className="bg-[#0F2C4C] text-white py-2.5 px-4 text-center text-xs sm:text-sm font-bold flex items-center justify-center gap-2 border-b border-[#D96B27]/40 shadow-xs">
+          <Megaphone className="h-4 w-4 text-[#D96B27] shrink-0" />
+          {store.promoBannerLink ? (
+            <Link href={store.promoBannerLink} className="hover:underline">
+              {store.promoBanner}
+            </Link>
+          ) : (
+            <span>{store.promoBanner}</span>
+          )}
+        </div>
+      )}
 
       <main className="flex-1 pb-16">
         {/* BANNIÈRE VITRINE */}
@@ -95,6 +113,18 @@ export default async function StorePage(props: {
                         <ShieldCheck className="h-3.5 w-3.5 text-[#C5A059]" />
                         Artisan Vérifié
                       </Badge>
+                    )}
+                    {store.subscriptionPlan === "ENTERPRISE" && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-[#0F2C4C] text-[#C5A059] px-2.5 py-0.5 text-xs font-bold shadow-xs">
+                        <Headphones className="h-3 w-3" />
+                        Atelier Entreprise
+                      </span>
+                    )}
+                    {store.subscriptionPlan === "PRO" && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-[#D96B27]/15 text-[#D96B27] px-2.5 py-0.5 text-xs font-bold">
+                        <Sparkles className="h-3 w-3" />
+                        Artisan Pro
+                      </span>
                     )}
                   </div>
 
@@ -147,6 +177,36 @@ export default async function StorePage(props: {
                 </span>
               )}
             </div>
+
+            {/* Assistance Télévendeur Dédié (Plan Entreprise) */}
+            {(store.subscriptionPlan === "ENTERPRISE" || store.hasTelepromoter) && (
+              <div className="mt-6 rounded-2xl border border-[#0F2C4C]/10 bg-[#0F2C4C]/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#0F2C4C] text-[#C5A059] shrink-0">
+                    <Headphones className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-[#0F2C4C]">
+                      Service Télévendeur KOMO-ART Dédié
+                    </div>
+                    <div className="text-[11px] text-[#0F2C4C]/70">
+                      Un conseiller vous assiste par téléphone & WhatsApp pour vos commandes et expéditions diaspora.
+                    </div>
+                  </div>
+                </div>
+                {store.telepromoterPhone && (
+                  <a
+                    href={`https://wa.me/${store.telepromoterPhone.replace(/[^0-9]/g, "")}?text=Bonjour,%20je%20souhaite%20commander%20chez%20l'atelier%20${encodeURIComponent(store.name)}.`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0F2C4C] text-white font-bold text-xs hover:bg-[#183e68] transition-colors whitespace-nowrap self-start sm:self-center"
+                  >
+                    <PhoneCall className="h-3.5 w-3.5 text-[#C5A059]" />
+                    Contacter le télévendeur
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
 

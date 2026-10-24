@@ -25,10 +25,29 @@ export async function POST(req: Request) {
     // Vérifier que la boutique appartient bien à l'utilisateur
     const store = await prisma.store.findFirst({
       where: { id: storeId, userId: user.id },
+      include: { _count: { select: { products: true } } },
     });
 
     if (!store && user.role !== "SUPER_ADMIN") {
       return NextResponse.json({ error: "Boutique non autorisée" }, { status: 403 });
+    }
+
+    if (store) {
+      const maxProducts =
+        store.subscriptionPlan === "ENTERPRISE"
+          ? 999999
+          : store.subscriptionPlan === "PRO"
+          ? 50
+          : 10;
+
+      if (store._count.products >= maxProducts) {
+        return NextResponse.json(
+          {
+            error: `Limite atteinte : votre forfait ${store.subscriptionPlan} autorise jusqu'à ${maxProducts} créations. Passez à l'offre supérieure dans votre espace Abonnement.`,
+          },
+          { status: 403 }
+        );
+      }
     }
 
     const product = await prisma.product.create({

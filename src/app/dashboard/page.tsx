@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { requireArtisanStore } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { formatKMF, formatDate } from "@/lib/format";
@@ -6,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ORDER_STATUS_LABELS, ORDER_STATUS_STYLES } from "@/lib/constants";
 import { buildWhatsAppLink, buildFollowUpMessage } from "@/lib/whatsapp";
+import { DashboardSubnav } from "@/components/dashboard/dashboard-subnav";
 import {
   Package,
   ShoppingBag,
@@ -16,6 +18,8 @@ import {
   ExternalLink,
   MessageCircle,
   Settings,
+  Sparkles,
+  Headphones,
 } from "lucide-react";
 
 export default async function DashboardPage() {
@@ -52,16 +56,39 @@ export default async function DashboardPage() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#0F2C4C] text-white font-extrabold text-base">
-                KA
+              <div className="relative h-9 w-9 rounded-xl overflow-hidden bg-white border border-[#0F2C4C]/10 flex items-center justify-center p-0.5">
+                <Image
+                  src="/images/komo-art-emblem.png"
+                  alt="KOMO-ART"
+                  fill
+                  className="object-contain"
+                />
               </div>
               <span className="font-extrabold text-lg text-[#0F2C4C]">
                 Atelier <span className="text-[#D96B27]">{store.name}</span>
               </span>
             </Link>
-            <span className="hidden sm:inline-block rounded-full bg-[#0F2C4C]/5 px-2.5 py-0.5 text-xs font-semibold text-[#0F2C4C]">
-              {store.isVerified ? "Artisan Vérifié" : "En cours de vérification"}
-            </span>
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="rounded-full bg-[#0F2C4C]/5 px-2.5 py-0.5 text-xs font-semibold text-[#0F2C4C]">
+                {store.isVerified ? "Artisan Vérifié" : "En cours de vérification"}
+              </span>
+              <span
+                className={`rounded-full px-2.5 py-0.5 text-xs font-bold flex items-center gap-1 ${
+                  store.subscriptionPlan === "ENTERPRISE"
+                    ? "bg-[#0F2C4C] text-[#C5A059]"
+                    : store.subscriptionPlan === "PRO"
+                    ? "bg-[#D96B27]/10 text-[#D96B27]"
+                    : "bg-stone-100 text-stone-600"
+                }`}
+              >
+                {store.subscriptionPlan === "ENTERPRISE" ? (
+                  <Headphones className="h-3 w-3" />
+                ) : store.subscriptionPlan === "PRO" ? (
+                  <Sparkles className="h-3 w-3" />
+                ) : null}
+                Forfait {store.subscriptionPlan}
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
@@ -82,6 +109,9 @@ export default async function DashboardPage() {
           </div>
         </div>
       </header>
+
+      {/* Barre d'onglets de navigation */}
+      <DashboardSubnav storePlan={store.subscriptionPlan} />
 
       {/* Contenu principal */}
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">

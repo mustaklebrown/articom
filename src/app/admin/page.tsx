@@ -19,11 +19,14 @@ import { AdminVerifyStoreButton } from "@/components/dashboard/admin-verify-butt
 import { AdminToggleStoreButton } from "@/components/dashboard/admin-toggle-store-button";
 import { AdminRoleSelector } from "@/components/dashboard/admin-role-selector";
 import { AdminCreateCategoryForm } from "@/components/dashboard/admin-create-category";
+import { AdminStorePlanSelector } from "@/components/dashboard/admin-store-plan-selector";
+import { AdminSubscriptionRequests } from "@/components/dashboard/admin-subscription-requests";
+import { Sparkles, Headphones } from "lucide-react";
 
 export default async function AdminPage() {
   await requireRole("SUPER_ADMIN");
 
-  const [stores, categories, totalOrders, users, totalRevenueResult] = await Promise.all([
+  const [stores, categories, totalOrders, users, totalRevenueResult, pendingRequests] = await Promise.all([
     prisma.store.findMany({
       orderBy: { createdAt: "desc" },
       include: {
@@ -50,6 +53,20 @@ export default async function AdminPage() {
         status: { in: ["CONFIRMED", "IN_PRODUCTION", "SHIPPED", "DELIVERED"] },
       },
       _sum: { totalAmount: true },
+    }),
+    prisma.subscriptionRequest.findMany({
+      where: { status: "PENDING" },
+      orderBy: { createdAt: "desc" },
+      include: {
+        store: {
+          select: {
+            id: true,
+            name: true,
+            whatsappNumber: true,
+            subscriptionPlan: true,
+          },
+        },
+      },
     }),
   ]);
 
@@ -140,7 +157,26 @@ export default async function AdminPage() {
           </div>
         </div>
 
-        {/* 1. GESTION DES BOUTIQUES ARTISANALES (Vérification & Suspension) */}
+        {/* NOUVEAU : DEMANDES D'ABONNEMENT EN ATTENTE (PRO, ENTREPRISE & TELEVENDEUR) */}
+        <div className="rounded-3xl border border-[#0F2C4C]/10 bg-white p-6 sm:p-8 shadow-xs space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#D96B27]/10 text-[#D96B27] text-[10px] font-extrabold uppercase tracking-wider mb-1">
+                <Sparkles className="h-3 w-3" />
+                SaaS & Abonnements Artisans
+              </div>
+              <h2 className="text-lg font-extrabold text-[#0F2C4C]">
+                Demandes d&apos;Abonnement en Attente ({pendingRequests.length})
+              </h2>
+              <p className="text-xs text-[#0F2C4C]/60">
+                Paiements d&apos;abonnements soumis via Huri Money, MVola ou WhatsApp Concierge
+              </p>
+            </div>
+          </div>
+          <AdminSubscriptionRequests requests={pendingRequests as any} />
+        </div>
+
+        {/* 1. GESTION DES BOUTIQUES ARTISANALES (Vérification & Suspension & Forfaits) */}
         <div className="rounded-3xl border border-[#0F2C4C]/10 bg-white p-6 sm:p-8 shadow-xs space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
@@ -148,7 +184,7 @@ export default async function AdminPage() {
                 Gestion des Boutiques & Modération des Ateliers
               </h2>
               <p className="text-xs text-[#0F2C4C]/60 mt-0.5">
-                Attribuez le badge &quot;Artisan Vérifié&quot; ou suspendez une vitrine en cas de litige
+                Attribuez le badge &quot;Artisan Vérifié&quot;, gérez les forfaits (Basic, Pro, Entreprise) et suspendez en cas de litige
               </p>
             </div>
           </div>
@@ -162,6 +198,7 @@ export default async function AdminPage() {
                   <th className="pb-3">Localisation</th>
                   <th className="pb-3">WhatsApp / Mobile Money</th>
                   <th className="pb-3">Statut & Badge</th>
+                  <th className="pb-3">Forfait & Télévendeur</th>
                   <th className="pb-3 text-right">Actions Modération</th>
                 </tr>
               </thead>
@@ -206,6 +243,23 @@ export default async function AdminPage() {
                           <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 text-rose-700 px-2 py-0.5 text-[10px] font-bold">
                             Boutique Suspendue
                           </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="py-4">
+                      <div className="flex flex-col gap-1 items-start">
+                        <AdminStorePlanSelector storeId={s.id} currentPlan={s.subscriptionPlan} />
+                        {s.subscriptionPlan === "ENTERPRISE" && (
+                          <div className="text-[10px] text-[#0F2C4C] font-bold flex items-center gap-1 bg-[#C5A059]/20 px-2 py-0.5 rounded-md">
+                            <Headphones className="h-3 w-3 text-[#D96B27]" />
+                            <span>{s.telepromoterName || "Télévendeur Attitré"}</span>
+                          </div>
+                        )}
+                        {s.subscriptionPlan === "PRO" && (
+                          <div className="text-[10px] text-[#D96B27] font-semibold flex items-center gap-1">
+                            <Sparkles className="h-3 w-3" />
+                            <span>Marketing Actif</span>
+                          </div>
                         )}
                       </div>
                     </td>
