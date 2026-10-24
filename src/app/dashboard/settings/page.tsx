@@ -3,6 +3,7 @@ import Image from "next/image";
 import { requireArtisanStore } from "@/lib/session";
 import { StoreForm } from "@/components/dashboard/store-form";
 import { DashboardSubnav } from "@/components/dashboard/dashboard-subnav";
+import { LogoutButton } from "@/components/auth/logout-button";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
 export default async function DashboardSettingsPage() {
@@ -38,6 +39,7 @@ export default async function DashboardSettingsPage() {
               <ExternalLink className="h-3.5 w-3.5" />
               <span>Voir ma vitrine</span>
             </Link>
+            <LogoutButton variant="icon" />
           </div>
         </div>
       </header>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getCurrentUser } from "@/lib/session";
 import { CartBadge } from "@/components/marketplace/cart-badge";
+import { LogoutButton } from "@/components/auth/logout-button";
 import { Store, Compass, ShieldCheck, LogIn, LayoutDashboard } from "lucide-react";
 
 export async function Navbar() {
@@ -66,13 +67,18 @@ export async function Navbar() {
           <CartBadge />
 
           {user ? (
-            <Link
-              href={user.role === "SUPER_ADMIN" ? "/admin" : user.role === "ARTISAN" ? "/dashboard" : "/dashboard"}
-              className="inline-flex items-center gap-2 rounded-xl bg-[#0F2C4C] px-4 py-2 text-xs sm:text-sm font-bold text-white hover:bg-[#183e68] shadow-sm transition-all"
-            >
-              <LayoutDashboard className="h-4 w-4 text-[#D96B27]" />
-              <span className="hidden sm:inline">Mon Espace</span>
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href={user.role === "SUPER_ADMIN" ? "/admin" : user.role === "ARTISAN" ? "/dashboard" : "/explore"}
+                className="inline-flex items-center gap-2 rounded-xl bg-[#0F2C4C] px-3.5 py-2 text-xs sm:text-sm font-bold text-white hover:bg-[#183e68] shadow-xs transition-all"
+              >
+                <LayoutDashboard className="h-4 w-4 text-[#D96B27]" />
+                <span className="hidden sm:inline">
+                  {user.role === "SUPER_ADMIN" ? "Super-Admin" : "Mon Espace"}
+                </span>
+              </Link>
+              <LogoutButton variant="navbar" />
+            </div>
           ) : (
             <div className="flex items-center gap-2">
               <Link

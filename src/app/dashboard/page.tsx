@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { ORDER_STATUS_LABELS, ORDER_STATUS_STYLES } from "@/lib/constants";
 import { buildWhatsAppLink, buildFollowUpMessage } from "@/lib/whatsapp";
 import { DashboardSubnav } from "@/components/dashboard/dashboard-subnav";
+import { LogoutButton } from "@/components/auth/logout-button";
 import {
   Package,
   ShoppingBag,
@@ -102,10 +103,12 @@ export default async function DashboardPage() {
             </Link>
             <Link
               href="/dashboard/settings"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[#0F2C4C]/20 text-[#0F2C4C] hover:bg-[#F8F8F6]"
+              title="Paramètres de la vitrine"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[#0F2C4C]/20 text-[#0F2C4C] hover:bg-[#F8F8F6] transition-colors"
             >
               <Settings className="h-4 w-4" />
             </Link>
+            <LogoutButton variant="icon" />
           </div>
         </div>
       </header>

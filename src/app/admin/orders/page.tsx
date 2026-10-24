@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { formatKMF, formatDate } from "@/lib/format";
 import { ISLAND_LABELS, ORDER_STATUS_LABELS, ORDER_STATUS_STYLES } from "@/lib/constants";
 import { AdminSubnav } from "@/components/dashboard/admin-subnav";
+import { LogoutButton } from "@/components/auth/logout-button";
 import {
   ShoppingBag,
   ExternalLink,
@@ -71,13 +72,14 @@ export default async function AdminOrdersPage(props: {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Link
               href="/"
               className="text-xs font-bold text-white/80 hover:text-white transition-colors"
             >
               Marketplace
             </Link>
+            <LogoutButton variant="admin" />
           </div>
         </div>
       </header>

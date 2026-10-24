@@ -31,20 +31,28 @@ export async function requireUser(redirectTo = "/login") {
 
 /** Exige un rôle donné ; renvoie l'utilisateur. */
 export async function requireRole(role: AppRole | AppRole[]) {
-  const user = await requireUser();
   const roles = Array.isArray(role) ? role : [role];
-  if (!roles.includes(user.role as AppRole)) redirect("/");
+  const targetNext = roles.includes("SUPER_ADMIN") ? "/admin" : "/dashboard";
+  const user = await requireUser(`/login?next=${targetNext}`);
+  if (!roles.includes(user.role as AppRole)) {
+    redirect(`/login?error=forbidden&required=${roles.join(",")}&current=${user.role}`);
+  }
   return user;
 }
 
 /**
  * Exige un artisan avec boutique. Si l'utilisateur n'a pas encore de boutique,
- * il est redirigé vers l'onboarding.
+ * il est redirigé vers l'onboarding (ou vers /admin si SUPER_ADMIN).
  */
 export const requireArtisanStore = cache(async () => {
   const user = await requireUser("/login?next=/dashboard");
   const store = await prisma.store.findUnique({ where: { userId: user.id } });
-  if (!store) redirect("/onboarding");
+  if (!store) {
+    if (user.role === "SUPER_ADMIN") {
+      redirect("/admin");
+    }
+    redirect("/onboarding");
+  }
   if (user.role !== "ARTISAN" && user.role !== "SUPER_ADMIN") redirect("/");
   return { user, store };
 });

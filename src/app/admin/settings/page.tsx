@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { AdminSubnav } from "@/components/dashboard/admin-subnav";
 import { AdminSettingsForm } from "@/components/dashboard/admin-settings-form";
+import { LogoutButton } from "@/components/auth/logout-button";
 
 export const metadata = {
   title: "Configurations & Paramètres Système | KOMO-ART Super-Admin",
@@ -42,13 +43,14 @@ export default async function AdminSettingsPage() {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Link
               href="/"
               className="text-xs font-bold text-white/80 hover:text-white transition-colors"
             >
               Marketplace
             </Link>
+            <LogoutButton variant="admin" />
           </div>
         </div>
       </header>

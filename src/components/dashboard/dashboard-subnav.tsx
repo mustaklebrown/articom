@@ -10,6 +10,7 @@ import {
   Settings,
   Sparkles,
 } from "lucide-react";
+import { LogoutButton } from "@/components/auth/logout-button";
 
 export function DashboardSubnav({
   storePlan = "BASIC",
@@ -55,8 +56,8 @@ export function DashboardSubnav({
 
   return (
     <div className="border-b border-[#0F2C4C]/10 bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <nav className="flex space-x-1 sm:space-x-4 overflow-x-auto py-2.5">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+        <nav className="flex space-x-1 sm:space-x-4 overflow-x-auto py-2.5 min-w-0">
           {links.map((link) => {
             const Icon = link.icon;
             return (
@@ -86,6 +87,9 @@ export function DashboardSubnav({
             );
           })}
         </nav>
+        <div className="hidden sm:flex items-center shrink-0 py-2">
+          <LogoutButton variant="ghost" />
+        </div>
       </div>
     </div>
   );

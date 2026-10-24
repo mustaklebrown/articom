@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
 import { AdminSubnav } from "@/components/dashboard/admin-subnav";
 import { AdminRoleSelector } from "@/components/dashboard/admin-role-selector";
+import { LogoutButton } from "@/components/auth/logout-button";
 import { Users, Store, ShieldCheck, UserCheck } from "lucide-react";
 
 export const metadata = {
@@ -45,13 +46,14 @@ export default async function AdminUsersPage() {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Link
               href="/"
               className="text-xs font-bold text-white/80 hover:text-white transition-colors"
             >
               Marketplace
             </Link>
+            <LogoutButton variant="admin" />
           </div>
         </div>
       </header>
