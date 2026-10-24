@@ -406,7 +406,8 @@ export const ModelName = {
   Product: 'Product',
   Order: 'Order',
   OrderItem: 'OrderItem',
-  SubscriptionRequest: 'SubscriptionRequest'
+  SubscriptionRequest: 'SubscriptionRequest',
+  SystemSetting: 'SystemSetting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -422,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "store" | "category" | "product" | "order" | "orderItem" | "subscriptionRequest"
+    modelProps: "user" | "session" | "account" | "verification" | "store" | "category" | "product" | "order" | "orderItem" | "subscriptionRequest" | "systemSetting"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1166,6 +1167,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SystemSetting: {
+      payload: Prisma.$SystemSettingPayload<ExtArgs>
+      fields: Prisma.SystemSettingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SystemSettingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SystemSettingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        findFirst: {
+          args: Prisma.SystemSettingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SystemSettingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        findMany: {
+          args: Prisma.SystemSettingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>[]
+        }
+        create: {
+          args: Prisma.SystemSettingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        createMany: {
+          args: Prisma.SystemSettingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SystemSettingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>[]
+        }
+        delete: {
+          args: Prisma.SystemSettingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        update: {
+          args: Prisma.SystemSettingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        deleteMany: {
+          args: Prisma.SystemSettingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SystemSettingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SystemSettingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>[]
+        }
+        upsert: {
+          args: Prisma.SystemSettingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        aggregate: {
+          args: Prisma.SystemSettingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSystemSetting>
+        }
+        groupBy: {
+          args: Prisma.SystemSettingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemSettingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SystemSettingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemSettingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1379,6 +1454,17 @@ export const SubscriptionRequestScalarFieldEnum = {
 } as const
 
 export type SubscriptionRequestScalarFieldEnum = (typeof SubscriptionRequestScalarFieldEnum)[keyof typeof SubscriptionRequestScalarFieldEnum]
+
+
+export const SystemSettingScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  value: 'value',
+  description: 'description',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SystemSettingScalarFieldEnum = (typeof SystemSettingScalarFieldEnum)[keyof typeof SystemSettingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1732,6 +1818,7 @@ export type GlobalOmitConfig = {
   order?: Prisma.OrderOmit
   orderItem?: Prisma.OrderItemOmit
   subscriptionRequest?: Prisma.SubscriptionRequestOmit
+  systemSetting?: Prisma.SystemSettingOmit
 }
 
 /* Types for Logging */

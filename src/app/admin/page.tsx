@@ -1,8 +1,16 @@
 import Link from "next/link";
+import Image from "next/image";
 import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { formatKMF, formatDate } from "@/lib/format";
 import { ISLAND_LABELS } from "@/lib/constants";
+import { AdminVerifyStoreButton } from "@/components/dashboard/admin-verify-button";
+import { AdminToggleStoreButton } from "@/components/dashboard/admin-toggle-store-button";
+import { AdminRoleSelector } from "@/components/dashboard/admin-role-selector";
+import { AdminCreateCategoryForm } from "@/components/dashboard/admin-create-category";
+import { AdminStorePlanSelector } from "@/components/dashboard/admin-store-plan-selector";
+import { AdminSubscriptionRequests } from "@/components/dashboard/admin-subscription-requests";
+import { AdminSubnav } from "@/components/dashboard/admin-subnav";
 import {
   ShieldCheck,
   Store,
@@ -14,14 +22,9 @@ import {
   Settings,
   TrendingUp,
   AlertTriangle,
+  Sparkles,
+  Headphones,
 } from "lucide-react";
-import { AdminVerifyStoreButton } from "@/components/dashboard/admin-verify-button";
-import { AdminToggleStoreButton } from "@/components/dashboard/admin-toggle-store-button";
-import { AdminRoleSelector } from "@/components/dashboard/admin-role-selector";
-import { AdminCreateCategoryForm } from "@/components/dashboard/admin-create-category";
-import { AdminStorePlanSelector } from "@/components/dashboard/admin-store-plan-selector";
-import { AdminSubscriptionRequests } from "@/components/dashboard/admin-subscription-requests";
-import { Sparkles, Headphones } from "lucide-react";
 
 export default async function AdminPage() {
   await requireRole("SUPER_ADMIN");
@@ -78,8 +81,13 @@ export default async function AdminPage() {
       <header className="border-b border-[#0F2C4C]/10 bg-[#0F2C4C] text-white">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#D96B27] text-white font-extrabold text-base">
-              KA
+            <div className="relative h-9 w-9 rounded-xl overflow-hidden bg-white border border-white/20 flex items-center justify-center p-0.5">
+              <Image
+                src="/images/komo-art-emblem.png"
+                alt="KOMO-ART"
+                fill
+                className="object-contain"
+              />
             </div>
             <div>
               <span className="font-extrabold text-lg tracking-tight">
@@ -100,6 +108,9 @@ export default async function AdminPage() {
           </div>
         </div>
       </header>
+
+      {/* Barre de navigation Super-Admin */}
+      <AdminSubnav />
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-10">
         {/* STATS GLOBALES SAAS */}

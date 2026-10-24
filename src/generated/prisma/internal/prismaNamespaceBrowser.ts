@@ -60,7 +60,8 @@ export const ModelName = {
   Product: 'Product',
   Order: 'Order',
   OrderItem: 'OrderItem',
-  SubscriptionRequest: 'SubscriptionRequest'
+  SubscriptionRequest: 'SubscriptionRequest',
+  SystemSetting: 'SystemSetting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -253,6 +254,17 @@ export const SubscriptionRequestScalarFieldEnum = {
 } as const
 
 export type SubscriptionRequestScalarFieldEnum = (typeof SubscriptionRequestScalarFieldEnum)[keyof typeof SubscriptionRequestScalarFieldEnum]
+
+
+export const SystemSettingScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  value: 'value',
+  description: 'description',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SystemSettingScalarFieldEnum = (typeof SystemSettingScalarFieldEnum)[keyof typeof SystemSettingScalarFieldEnum]
 
 
 export const SortOrder = {

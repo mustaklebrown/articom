@@ -24,7 +24,7 @@ interface SubscriptionManagerProps {
   store: {
     id: string;
     name: string;
-    subscriptionPlan: "BASIC" | "PRO" | "ENTERPRISE";
+    subscriptionPlan: SubscriptionPlan;
     billingPeriod: "MONTHLY" | "YEARLY";
     subscriptionExpiresAt: Date | string | null;
     hasMarketingTools: boolean;
@@ -35,7 +35,7 @@ interface SubscriptionManagerProps {
   };
   pendingRequest: {
     id: string;
-    requestedPlan: "BASIC" | "PRO" | "ENTERPRISE";
+    requestedPlan: SubscriptionPlan;
     billingPeriod: "MONTHLY" | "YEARLY";
     paymentMethod: string;
     transactionRef: string | null;

@@ -91,3 +91,8 @@ export type OrderItem = Prisma.OrderItemModel
  * 
  */
 export type SubscriptionRequest = Prisma.SubscriptionRequestModel
+/**
+ * Model SystemSetting
+ * 
+ */
+export type SystemSetting = Prisma.SystemSettingModel
