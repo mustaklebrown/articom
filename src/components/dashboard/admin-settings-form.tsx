@@ -14,6 +14,12 @@ import {
   Mail,
   ShieldAlert,
   Sparkles,
+  Sliders,
+  UserPlus,
+  Store,
+  Headphones,
+  Globe2,
+  CreditCard,
 } from "lucide-react";
 
 interface AdminSettingsFormProps {
@@ -230,6 +236,172 @@ export function AdminSettingsForm({ initialSettings }: AdminSettingsFormProps) {
             >
               <option value="false">Désactivé (Marketplace en ligne)</option>
               <option value="true">Activé (Accès restreint pour maintenance)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. CONTRÔLE DES MODULES & FONCTIONNALITÉS GLOBALES (FEATURE FLAGS) */}
+      <div className="rounded-3xl border border-[#0F2C4C]/10 bg-white p-6 sm:p-8 shadow-xs space-y-6">
+        <div className="flex items-center gap-3 border-b border-[#0F2C4C]/10 pb-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0F2C4C]/5 text-[#0F2C4C]">
+            <Sliders className="h-5 w-5 text-[#D96B27]" />
+          </div>
+          <div>
+            <h3 className="font-extrabold text-base text-[#0F2C4C]">
+              Contrôle des Modules & Fonctionnalités Plateforme (Feature Flags)
+            </h3>
+            <p className="text-xs text-[#0F2C4C]/60">
+              Activez ou suspendez les grands modules fonctionnels de la marketplace KOMO-ART en temps réel.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Inscriptions */}
+          <div className="p-4 rounded-2xl border border-stone-200 bg-[#F8F8F6] flex items-center justify-between gap-4">
+            <div className="space-y-0.5">
+              <div className="text-xs font-bold text-[#0F2C4C] flex items-center gap-1.5">
+                <UserPlus className="h-4 w-4 text-[#D96B27]" />
+                Inscriptions Ouvertes
+              </div>
+              <p className="text-[11px] text-stone-500">
+                Autorise de nouveaux acheteurs et artisans à créer un compte.
+              </p>
+            </div>
+            <select
+              value={settings.FEATURE_ALLOW_REGISTRATIONS || "true"}
+              onChange={(e) => handleChange("FEATURE_ALLOW_REGISTRATIONS", e.target.value)}
+              className="rounded-xl border border-stone-300 bg-white px-2.5 py-1 text-xs font-bold text-[#0F2C4C] focus:border-[#D96B27] focus:outline-hidden"
+            >
+              <option value="true">Activé</option>
+              <option value="false">Fermé</option>
+            </select>
+          </div>
+
+          {/* Création de Boutiques */}
+          <div className="p-4 rounded-2xl border border-stone-200 bg-[#F8F8F6] flex items-center justify-between gap-4">
+            <div className="space-y-0.5">
+              <div className="text-xs font-bold text-[#0F2C4C] flex items-center gap-1.5">
+                <Store className="h-4 w-4 text-[#0F2C4C]" />
+                Création de Boutiques
+              </div>
+              <p className="text-[11px] text-stone-500">
+                Autorise les artisans à ouvrir un nouvel atelier en ligne.
+              </p>
+            </div>
+            <select
+              value={settings.FEATURE_ALLOW_STORE_CREATION || "true"}
+              onChange={(e) => handleChange("FEATURE_ALLOW_STORE_CREATION", e.target.value)}
+              className="rounded-xl border border-stone-300 bg-white px-2.5 py-1 text-xs font-bold text-[#0F2C4C] focus:border-[#D96B27] focus:outline-hidden"
+            >
+              <option value="true">Activé</option>
+              <option value="false">Fermé</option>
+            </select>
+          </div>
+
+          {/* Commandes WhatsApp */}
+          <div className="p-4 rounded-2xl border border-stone-200 bg-[#F8F8F6] flex items-center justify-between gap-4">
+            <div className="space-y-0.5">
+              <div className="text-xs font-bold text-[#0F2C4C] flex items-center gap-1.5">
+                <MessageCircle className="h-4 w-4 text-emerald-600" />
+                Commandes Directes WhatsApp
+              </div>
+              <p className="text-[11px] text-stone-500">
+                Affiche les boutons d&apos;achat et de contact WhatsApp sur les créations.
+              </p>
+            </div>
+            <select
+              value={settings.FEATURE_WHATSAPP_CHECKOUT || "true"}
+              onChange={(e) => handleChange("FEATURE_WHATSAPP_CHECKOUT", e.target.value)}
+              className="rounded-xl border border-stone-300 bg-white px-2.5 py-1 text-xs font-bold text-[#0F2C4C] focus:border-[#D96B27] focus:outline-hidden"
+            >
+              <option value="true">Activé</option>
+              <option value="false">Désactivé</option>
+            </select>
+          </div>
+
+          {/* Outils Marketing */}
+          <div className="p-4 rounded-2xl border border-stone-200 bg-[#F8F8F6] flex items-center justify-between gap-4">
+            <div className="space-y-0.5">
+              <div className="text-xs font-bold text-[#0F2C4C] flex items-center gap-1.5">
+                <Megaphone className="h-4 w-4 text-purple-600" />
+                Outils Marketing & Bannières
+              </div>
+              <p className="text-[11px] text-stone-500">
+                Active le module de bannières promo et mise en avant pour les artisans.
+              </p>
+            </div>
+            <select
+              value={settings.FEATURE_MARKETING_TOOLS || "true"}
+              onChange={(e) => handleChange("FEATURE_MARKETING_TOOLS", e.target.value)}
+              className="rounded-xl border border-stone-300 bg-white px-2.5 py-1 text-xs font-bold text-[#0F2C4C] focus:border-[#D96B27] focus:outline-hidden"
+            >
+              <option value="true">Activé</option>
+              <option value="false">Désactivé</option>
+            </select>
+          </div>
+
+          {/* Télévendeur Dédié */}
+          <div className="p-4 rounded-2xl border border-stone-200 bg-[#F8F8F6] flex items-center justify-between gap-4">
+            <div className="space-y-0.5">
+              <div className="text-xs font-bold text-[#0F2C4C] flex items-center gap-1.5">
+                <Headphones className="h-4 w-4 text-[#D96B27]" />
+                Service Télévendeur Dédié
+              </div>
+              <p className="text-[11px] text-stone-500">
+                Active le service commercial télévendeur KOMO-ART aux Comores.
+              </p>
+            </div>
+            <select
+              value={settings.FEATURE_TELEPROMOTER || "true"}
+              onChange={(e) => handleChange("FEATURE_TELEPROMOTER", e.target.value)}
+              className="rounded-xl border border-stone-300 bg-white px-2.5 py-1 text-xs font-bold text-[#0F2C4C] focus:border-[#D96B27] focus:outline-hidden"
+            >
+              <option value="true">Activé</option>
+              <option value="false">Désactivé</option>
+            </select>
+          </div>
+
+          {/* Expédition Internationale */}
+          <div className="p-4 rounded-2xl border border-stone-200 bg-[#F8F8F6] flex items-center justify-between gap-4">
+            <div className="space-y-0.5">
+              <div className="text-xs font-bold text-[#0F2C4C] flex items-center gap-1.5">
+                <Globe2 className="h-4 w-4 text-sky-600" />
+                Expédition Internationale (Diaspora)
+              </div>
+              <p className="text-[11px] text-stone-500">
+                Affiche les options de fret et livraison vers la France et l&apos;international.
+              </p>
+            </div>
+            <select
+              value={settings.FEATURE_INTERNATIONAL_SHIPPING || "true"}
+              onChange={(e) => handleChange("FEATURE_INTERNATIONAL_SHIPPING", e.target.value)}
+              className="rounded-xl border border-stone-300 bg-white px-2.5 py-1 text-xs font-bold text-[#0F2C4C] focus:border-[#D96B27] focus:outline-hidden"
+            >
+              <option value="true">Activé</option>
+              <option value="false">Désactivé</option>
+            </select>
+          </div>
+
+          {/* Abonnements SaaS Payants */}
+          <div className="p-4 rounded-2xl border border-stone-200 bg-[#F8F8F6] flex items-center justify-between gap-4 sm:col-span-2">
+            <div className="space-y-0.5">
+              <div className="text-xs font-bold text-[#0F2C4C] flex items-center gap-1.5">
+                <CreditCard className="h-4 w-4 text-emerald-600" />
+                Souscriptions & Abonnements Payants en Ligne
+              </div>
+              <p className="text-[11px] text-stone-500">
+                Permet aux artisans de soumettre des demandes d&apos;abonnements Pro et Entreprise avec règlement Mobile Money.
+              </p>
+            </div>
+            <select
+              value={settings.FEATURE_SUBSCRIPTIONS || "true"}
+              onChange={(e) => handleChange("FEATURE_SUBSCRIPTIONS", e.target.value)}
+              className="rounded-xl border border-stone-300 bg-white px-2.5 py-1 text-xs font-bold text-[#0F2C4C] focus:border-[#D96B27] focus:outline-hidden"
+            >
+              <option value="true">Activé (Paiements d&apos;abonnements ouverts)</option>
+              <option value="false">Désactivé (Accès gratuit ou sur invitation)</option>
             </select>
           </div>
         </div>

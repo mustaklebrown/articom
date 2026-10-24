@@ -10,6 +10,7 @@ import { AdminRoleSelector } from "@/components/dashboard/admin-role-selector";
 import { AdminCreateCategoryForm } from "@/components/dashboard/admin-create-category";
 import { AdminStorePlanSelector } from "@/components/dashboard/admin-store-plan-selector";
 import { AdminSubscriptionRequests } from "@/components/dashboard/admin-subscription-requests";
+import { AdminStoreFeaturesDialog } from "@/components/dashboard/admin-store-features-dialog";
 import { AdminSubnav } from "@/components/dashboard/admin-subnav";
 import { LogoutButton } from "@/components/auth/logout-button";
 import {
@@ -278,6 +279,7 @@ export default async function AdminPage() {
                     </td>
                     <td className="py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <AdminStoreFeaturesDialog store={s as any} />
                         <AdminVerifyStoreButton storeId={s.id} isVerified={s.isVerified} />
                         <AdminToggleStoreButton storeId={s.id} isActive={s.isActive} />
                       </div>

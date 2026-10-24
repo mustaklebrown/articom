@@ -37,6 +37,17 @@ export const auth = betterAuth({
         type: "string",
         required: false,
       },
+      banned: {
+        type: "boolean",
+        required: false,
+        defaultValue: false,
+        input: false,
+      },
+      banReason: {
+        type: "string",
+        required: false,
+        input: false,
+      },
     },
   },
   plugins: [nextCookies()],

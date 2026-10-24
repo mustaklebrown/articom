@@ -60,6 +60,19 @@ function LoginForm() {
 
   return (
     <div className="rounded-3xl border border-[#0F2C4C]/10 bg-white p-8 shadow-xl space-y-6">
+      {/* Alerte si compte suspendu */}
+      {errorParam === "banned" && (
+        <div className="rounded-2xl bg-rose-50 border border-rose-200 p-4 text-xs text-rose-900 flex items-start gap-3">
+          <AlertCircle className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="font-bold">Compte suspendu</p>
+            <p className="text-[11px] text-rose-800">
+              Votre compte a été temporairement ou définitivement suspendu par l&apos;administration KOMO-ART. Pour toute réclamation, contactez le support.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Alerte si accès refusé à /admin */}
       {errorParam === "forbidden" && (
         <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-xs text-amber-900 flex items-start gap-3">

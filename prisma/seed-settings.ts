@@ -47,6 +47,41 @@ const DEFAULT_SETTINGS = [
     value: "contact@komo-art.km",
     description: "Adresse email officielle du support Super-Admin",
   },
+  {
+    key: "FEATURE_ALLOW_REGISTRATIONS",
+    value: "true",
+    description: "Autoriser l'inscription de nouveaux utilisateurs sur la plateforme",
+  },
+  {
+    key: "FEATURE_ALLOW_STORE_CREATION",
+    value: "true",
+    description: "Autoriser la création de nouvelles boutiques pour les artisans",
+  },
+  {
+    key: "FEATURE_WHATSAPP_CHECKOUT",
+    value: "true",
+    description: "Activer la finalisation des commandes directement par WhatsApp",
+  },
+  {
+    key: "FEATURE_MARKETING_TOOLS",
+    value: "true",
+    description: "Activer les modules d'outils marketing et de bannières",
+  },
+  {
+    key: "FEATURE_TELEPROMOTER",
+    value: "true",
+    description: "Activer le service télévendeur dédié",
+  },
+  {
+    key: "FEATURE_INTERNATIONAL_SHIPPING",
+    value: "true",
+    description: "Activer les badges et options d'expédition internationale pour la diaspora",
+  },
+  {
+    key: "FEATURE_SUBSCRIPTIONS",
+    value: "true",
+    description: "Activer le système de forfaits et d'abonnements payants",
+  },
 ];
 
 async function main() {

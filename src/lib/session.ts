@@ -26,6 +26,9 @@ export async function getCurrentUser() {
 export async function requireUser(redirectTo = "/login") {
   const user = await getCurrentUser();
   if (!user) redirect(redirectTo);
+  if ((user as any).banned) {
+    redirect("/login?error=banned");
+  }
   return user;
 }
 
