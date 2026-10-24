@@ -1,0 +1,280 @@
+// KOMO-ART — Schéma de base de données (PostgreSQL / Prisma 7)
+// L'URL de connexion est configurée dans prisma.config.ts (DATABASE_URL).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────────────────────
+
+enum Role {
+  SUPER_ADMIN
+  ARTISAN
+  CUSTOMER
+}
+
+enum Island {
+  NGAZIDJA
+  NDZUWANI
+  MWALI
+  MAORE
+}
+
+enum PaymentMethod {
+  WHATSAPP_DIRECT
+  HURI_MONEY
+  MVOLA
+  CASH_ON_DELIVERY
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  IN_PRODUCTION
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum SubscriptionPlan {
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+enum SubscriptionBillingPeriod {
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// ─────────────────────────────────────────────────────────────
+// Better-Auth (User, Session, Account, Verification)
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          Role      @default(CUSTOMER)
+  phone         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions Session[]
+  accounts Account[]
+  store    Store?
+  orders   Order[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Domaine KOMO-ART
+// ─────────────────────────────────────────────────────────────
+
+model Store {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  description    String?  @db.Text
+  logo           String?
+  banner         String?
+  island         Island
+  city           String
+  whatsappNumber String // Format international : +269XXXXXXX
+
+  // Mobile Money (numéros au format international)
+  mobileMoneyName String? // Nom du bénéficiaire affiché au client
+  huriMoney       String?
+  mvola           String?
+  orangeMoney     String?
+
+  isVerified Boolean  @default(false)
+  isActive   Boolean  @default(true)
+
+  // Abonnements & Fonctionnalités (BASIC, PRO, ENTERPRISE)
+  subscriptionPlan         SubscriptionPlan          @default(BASIC)
+  billingPeriod            SubscriptionBillingPeriod @default(MONTHLY)
+  subscriptionExpiresAt    DateTime?
+  hasMarketingTools        Boolean                   @default(false) // Marketing, bannières, mise en avant
+  hasTelepromoter          Boolean                   @default(false) // Service télévendeur dédié
+  hasInternationalShipping Boolean                   @default(false) // Logistique diaspora & export
+  telepromoterName         String?                   // Ex: "Amina (Télévendeuse KOMO-ART)"
+  telepromoterPhone        String?                   // Ex: "+269 333 45 67"
+  promoBanner              String?                   // Message ou image promotionnelle
+  promoBannerLink          String?
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  userId               String                @unique
+  user                 User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products             Product[]
+  orders               Order[]
+  subscriptionRequests SubscriptionRequest[]
+
+  @@index([island])
+  @@index([subscriptionPlan])
+  @@map("store")
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  icon      String? // Nom d'icône Lucide (ex: "Hammer")
+  createdAt DateTime  @default(now())
+  products  Product[]
+
+  @@map("category")
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String
+  description   String?  @db.Text
+  price         Int // en KMF (Franc Comorien)
+  images        String[]
+  stock         Int      @default(0)
+  isMadeToOrder Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  views         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  storeId    String
+  store      Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  categoryId String
+  category   Category    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  orderItems OrderItem[]
+
+  @@unique([storeId, slug])
+  @@index([categoryId])
+  @@index([price])
+  @@index([createdAt])
+  @@map("product")
+}
+
+model Order {
+  id              String        @id @default(cuid())
+  orderNumber     String        @unique // ex: KA-8492
+  customerName    String
+  customerPhone   String
+  customerAddress String
+  customerCity    String?
+  island          Island
+  note            String?       @db.Text
+  totalAmount     Int // en KMF
+  paymentMethod   PaymentMethod
+  paymentProofUrl String?
+  transactionRef  String?
+  status          OrderStatus   @default(PENDING)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  storeId    String
+  store      Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customerId String?
+  customer   User?       @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  items      OrderItem[]
+
+  @@index([storeId, status])
+  @@index([createdAt])
+  @@map("order")
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  quantity  Int
+  unitPrice Int // Prix unitaire figé au moment de la commande (KMF)
+  title     String // Titre figé au moment de la commande
+
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@map("order_item")
+}
+
+model SubscriptionRequest {
+  id             String                    @id @default(cuid())
+  storeId        String
+  store          Store                     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  requestedPlan  SubscriptionPlan
+  billingPeriod  SubscriptionBillingPeriod @default(MONTHLY)
+  paymentMethod  PaymentMethod
+  transactionRef String?
+  notes          String?                   @db.Text
+  status         SubscriptionRequestStatus @default(PENDING)
+  createdAt      DateTime                  @default(now())
+  updatedAt      DateTime                  @updatedAt
+
+  @@index([storeId, status])
+  @@index([createdAt])
+  @@map("subscription_request")
+}
