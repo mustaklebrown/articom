@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import Link from "next/link";
 import { SUBSCRIPTION_PLANS, COMPARISON_CATEGORIES } from "@/lib/subscriptions";
 import { formatKMF } from "@/lib/format";
@@ -399,7 +399,7 @@ export function PricingSection({ isLoggedIn = false, currentPlan = "BASIC" }: { 
             </thead>
             <tbody className="divide-y divide-[#0F2C4C]/5">
               {COMPARISON_CATEGORIES.map((cat, catIdx) => (
-                <div key={catIdx} className="contents">
+                <Fragment key={catIdx}>
                   <tr className="bg-[#0F2C4C]/5">
                     <td colSpan={4} className="py-2.5 px-6 font-extrabold text-xs uppercase tracking-wider text-[#0F2C4C]">
                       {cat.category}
@@ -445,7 +445,7 @@ export function PricingSection({ isLoggedIn = false, currentPlan = "BASIC" }: { 
                       </td>
                     </tr>
                   ))}
-                </div>
+                </Fragment>
               ))}
             </tbody>
           </table>
