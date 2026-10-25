@@ -65,17 +65,17 @@ enum SubscriptionRequestStatus {
 // ─────────────────────────────────────────────────────────────
 
 model User {
-  id            String    @id @default(cuid())
+  id            String   @id @default(cuid())
   name          String
-  email         String    @unique
-  emailVerified Boolean   @default(false)
+  email         String   @unique
+  emailVerified Boolean  @default(false)
   image         String?
-  role          Role      @default(CUSTOMER)
+  role          Role     @default(CUSTOMER)
   phone         String?
-  banned        Boolean   @default(false)
+  banned        Boolean  @default(false)
   banReason     String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   sessions Session[]
   accounts Account[]
@@ -137,10 +137,10 @@ model Verification {
 // ─────────────────────────────────────────────────────────────
 
 model Store {
-  id             String   @id @default(cuid())
+  id             String  @id @default(cuid())
   name           String
-  slug           String   @unique
-  description    String?  @db.Text
+  slug           String  @unique
+  description    String? @db.Text
   logo           String?
   banner         String?
   island         Island
@@ -153,8 +153,8 @@ model Store {
   mvola           String?
   orangeMoney     String?
 
-  isVerified Boolean  @default(false)
-  isActive   Boolean  @default(true)
+  isVerified Boolean @default(false)
+  isActive   Boolean @default(true)
 
   // Abonnements & Fonctionnalités (BASIC, PRO, ENTERPRISE)
   subscriptionPlan         SubscriptionPlan          @default(BASIC)
@@ -163,13 +163,13 @@ model Store {
   hasMarketingTools        Boolean                   @default(false) // Marketing, bannières, mise en avant
   hasTelepromoter          Boolean                   @default(false) // Service télévendeur dédié
   hasInternationalShipping Boolean                   @default(false) // Logistique diaspora & export
-  telepromoterName         String?                   // Ex: "Amina (Télévendeuse KOMO-ART)"
-  telepromoterPhone        String?                   // Ex: "+269 333 45 67"
-  promoBanner              String?                   // Message ou image promotionnelle
+  telepromoterName         String? // Ex: "Amina (Télévendeuse KOMO-ART)"
+  telepromoterPhone        String? // Ex: "+269 333 45 67"
+  promoBanner              String? // Message ou image promotionnelle
   promoBannerLink          String?
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   userId               String                @unique
   user                 User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -249,7 +249,7 @@ model Order {
 }
 
 model OrderItem {
-  id        String   @id @default(cuid())
+  id        String @id @default(cuid())
   quantity  Int
   unitPrice Int // Prix unitaire figé au moment de la commande (KMF)
   title     String // Titre figé au moment de la commande
