@@ -9,6 +9,7 @@ import {
   CreditCard,
   Settings,
   Sparkles,
+  Plus,
 } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
 
@@ -87,8 +88,18 @@ export function DashboardSubnav({
             );
           })}
         </nav>
-        <div className="hidden sm:flex items-center shrink-0 py-2">
-          <LogoutButton variant="ghost" />
+        <div className="flex items-center gap-2 shrink-0 py-2">
+          <Link
+            href="/dashboard/products/new"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-[#D96B27] px-3.5 py-1.5 text-xs font-bold text-white hover:bg-[#b8561a] shadow-xs transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            <span className="hidden sm:inline">Ajouter un produit</span>
+            <span className="sm:hidden">+ Produit</span>
+          </Link>
+          <div className="hidden sm:block">
+            <LogoutButton variant="ghost" />
+          </div>
         </div>
       </div>
     </div>

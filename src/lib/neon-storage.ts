@@ -59,7 +59,7 @@ export async function uploadToNeonStorage({
 
   return {
     key: cleanKey,
-    url: `${endpoint}/${BUCKET_NAME}/${cleanKey}`,
+    url: `/api/storage/${cleanKey}`,
   };
 }
 
@@ -86,7 +86,7 @@ export async function getPresignedUploadUrl(
   return {
     uploadUrl,
     key: cleanKey,
-    publicUrl: `${endpoint}/${BUCKET_NAME}/${cleanKey}`,
+    publicUrl: `/api/storage/${cleanKey}`,
   };
 }
 

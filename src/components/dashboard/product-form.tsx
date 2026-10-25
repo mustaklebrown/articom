@@ -22,7 +22,7 @@ export function ProductForm({ categories, storeId }: ProductFormProps) {
   const [stock, setStock] = useState<number | "">(1);
   const [isMadeToOrder, setIsMadeToOrder] = useState(false);
   const [categoryId, setCategoryId] = useState(categories[0]?.id || "");
-  const [imageUrl, setImageUrl] = useState("/images/wood-chest.jpg");
+  const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
   function handleTitleChange(val: string) {
@@ -33,7 +33,12 @@ export function ProductForm({ categories, storeId }: ProductFormProps) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!title || price === "" || !categoryId) {
-      toast.error("Veuillez remplir tous les champs obligatoires.");
+      toast.error("Veuillez renseigner le titre, le prix et la catégorie.");
+      return;
+    }
+
+    if (!imageUrl) {
+      toast.error("Veuillez uploader ou choisir une photo pour votre création.");
       return;
     }
 

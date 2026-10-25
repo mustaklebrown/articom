@@ -50,17 +50,25 @@ export async function POST(req: Request) {
       }
     }
 
+    let finalSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const existing = await prisma.product.findFirst({
+      where: { storeId, slug: finalSlug },
+    });
+    if (existing) {
+      finalSlug = `${finalSlug}-${Date.now().toString(36).substring(2, 6)}`;
+    }
+
     const product = await prisma.product.create({
       data: {
         storeId,
         title,
-        slug,
+        slug: finalSlug,
         description,
         price: Math.max(100, Number(price)),
         stock: Number(stock) || 0,
         isMadeToOrder: Boolean(isMadeToOrder),
         categoryId,
-        images: images || ["/images/wood-chest.jpg"],
+        images: images && images.length > 0 ? images : ["/images/wood-chest.jpg"],
         isActive: true,
       },
     });
@@ -69,7 +77,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("[PRODUCT_CREATE_ERROR]", error);
     return NextResponse.json(
-      { error: "Erreur lors de la création du produit" },
+      { error: error.message || "Erreur lors de la création du produit" },
       { status: 500 }
     );
   }

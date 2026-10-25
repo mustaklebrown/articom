@@ -9,6 +9,7 @@ import { StoreCheckoutDrawer } from "@/components/store/store-checkout-drawer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ISLAND_LABELS } from "@/lib/constants";
+import { getCurrentUser } from "@/lib/session";
 import { buildWhatsAppLink, buildContactMessage } from "@/lib/whatsapp";
 import {
   MapPin,
@@ -20,6 +21,9 @@ import {
   Headphones,
   Sparkles,
   PhoneCall,
+  Plus,
+  Settings,
+  Crown,
 } from "lucide-react";
 
 export default async function StorePage(props: {
@@ -47,9 +51,55 @@ export default async function StorePage(props: {
     buildContactMessage(store.name)
   );
 
+  const currentUser = await getCurrentUser();
+  const isOwner = Boolean(
+    currentUser &&
+      (currentUser.id === store.userId || currentUser.role === "SUPER_ADMIN")
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-[#F8F8F6]">
       <Navbar />
+
+      {/* BARRE D'ACTIONS GÉRANT DE L'ATELIER (Visible uniquement par l'artisan propriétaire) */}
+      {isOwner && (
+        <div className="bg-[#0F2C4C] text-white border-b border-[#C5A059]/40 py-2.5 px-4 sm:px-6 shadow-md">
+          <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2 font-bold">
+              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#C5A059]/20 text-[#C5A059]">
+                <Crown className="h-3.5 w-3.5" />
+              </span>
+              <span>
+                Vous visualisez votre propre vitrine d&apos;artisan (
+                <strong className="text-[#C5A059]">{store.name}</strong>)
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Link
+                href="/dashboard/products/new"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-[#D96B27] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#b8561a] shadow-xs transition-colors"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                <span>+ Ajouter une création</span>
+              </Link>
+              <Link
+                href="/dashboard/settings"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-bold text-white hover:bg-white/20 transition-colors"
+              >
+                <Settings className="h-3.5 w-3.5" />
+                <span>Modifier Visuels (Logo & Bannière)</span>
+              </Link>
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-bold text-white hover:bg-white/20 transition-colors"
+              >
+                <span>Tableau de bord</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* BANDEAU PROMOTIONNEL MARKETING (Si configuré par l'artisan Pro / Entreprise) */}
       {store.promoBanner && (
