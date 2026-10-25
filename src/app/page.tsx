@@ -86,6 +86,7 @@ export default async function HomePage() {
               alt="Atelier d'artisan comorien"
               fill
               priority
+              sizes="100vw"
               className="object-cover"
             />
           </div>
@@ -156,6 +157,7 @@ export default async function HomePage() {
                     alt="Atelier d'artisan comorien"
                     fill
                     priority
+                    sizes="(max-width: 1024px) 100vw, 500px"
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
