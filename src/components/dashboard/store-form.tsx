@@ -7,6 +7,7 @@ import { ISLANDS } from "@/lib/constants";
 import { toast } from "sonner";
 import { slugify } from "@/lib/format";
 import type { Island } from "@/generated/prisma/enums";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 interface StoreFormProps {
   initialData?: any;
@@ -170,6 +171,29 @@ export function StoreForm({ initialData, defaultValues }: StoreFormProps) {
               placeholder="ex: Moroni, Mutsamudu..."
               className="h-10 w-full rounded-xl border border-[#0F2C4C]/20 bg-white px-3 text-xs text-[#0F2C4C] focus:border-[#D96B27] focus:outline-none"
             />
+          </div>
+
+          {/* Identité visuelle (Logo & Bannière) */}
+          <div className="pt-4 border-t border-[#0F2C4C]/10 space-y-4">
+            <h4 className="font-bold text-xs uppercase tracking-wider text-[#0F2C4C]">
+              Identité Visuelle & Bannières
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <ImageUpload
+                value={logo}
+                onChange={setLogo}
+                folder="stores"
+                label="Logo de l'Atelier / Photo d'artisan"
+                aspectRatio="square"
+              />
+              <ImageUpload
+                value={banner}
+                onChange={setBanner}
+                folder="banners"
+                label="Bannière d'en-tête de votre vitrine"
+                aspectRatio="banner"
+              />
+            </div>
           </div>
         </div>
       </div>

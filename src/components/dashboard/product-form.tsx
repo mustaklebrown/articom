@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { slugify } from "@/lib/format";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 interface ProductFormProps {
   categories: { id: string; name: string }[];
@@ -164,15 +165,12 @@ export function ProductForm({ categories, storeId }: ProductFormProps) {
       </div>
 
       <div>
-        <label className="text-xs font-bold text-[#0F2C4C] block mb-1">
-          Image de présentation (URL ou image locale)
-        </label>
-        <input
-          type="text"
+        <ImageUpload
           value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          placeholder="/images/wood-chest.jpg"
-          className="h-10 w-full rounded-xl border border-[#0F2C4C]/20 bg-white px-3 text-xs text-[#0F2C4C] focus:border-[#D96B27] focus:outline-none"
+          onChange={setImageUrl}
+          folder="products"
+          label="Photo de la création (Cloudinary)"
+          aspectRatio="square"
         />
       </div>
 

@@ -15,9 +15,16 @@ import {
   Store as StoreIcon,
   Search,
 } from "lucide-react";
+import { ProEnterpriseBannerModal } from "@/components/marketplace/pro-enterprise-banner-modal";
 
 export default async function HomePage() {
-  const [featuredProducts, categories, storesCount, productsCount] = await Promise.all([
+  const [
+    featuredProducts,
+    categories,
+    storesCount,
+    productsCount,
+    proEnterpriseStores,
+  ] = await Promise.all([
     prisma.product.findMany({
       where: { isActive: true },
       take: 6,
@@ -35,6 +42,35 @@ export default async function HomePage() {
     }),
     prisma.store.count({ where: { isActive: true } }),
     prisma.product.count({ where: { isActive: true } }),
+    prisma.store.findMany({
+      where: {
+        isActive: true,
+        subscriptionPlan: { in: ["PRO", "ENTERPRISE"] },
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        description: true,
+        logo: true,
+        banner: true,
+        island: true,
+        city: true,
+        whatsappNumber: true,
+        subscriptionPlan: true,
+        hasTelepromoter: true,
+        telepromoterName: true,
+        telepromoterPhone: true,
+        promoBanner: true,
+        promoBannerLink: true,
+        isVerified: true,
+      },
+      orderBy: [
+        { subscriptionPlan: "desc" },
+        { updatedAt: "desc" },
+      ],
+      take: 6,
+    }),
   ]);
 
   return (
@@ -360,6 +396,8 @@ export default async function HomePage() {
           </div>
         </section>
       </main>
+
+      <ProEnterpriseBannerModal stores={proEnterpriseStores} />
 
       <Footer />
     </div>

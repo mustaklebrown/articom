@@ -20,6 +20,7 @@ import {
   Headphones,
   Globe2,
   CreditCard,
+  CloudUpload,
 } from "lucide-react";
 
 interface AdminSettingsFormProps {
@@ -403,6 +404,77 @@ export function AdminSettingsForm({ initialSettings }: AdminSettingsFormProps) {
               <option value="true">Activé (Paiements d&apos;abonnements ouverts)</option>
               <option value="false">Désactivé (Accès gratuit ou sur invitation)</option>
             </select>
+          </div>
+        </div>
+      </div>
+
+      {/* 6. CONFIGURATION CLOUDINARY & STOCKAGE MÉDIAS */}
+      <div className="rounded-3xl border border-[#0F2C4C]/10 bg-white p-6 sm:p-8 shadow-xs space-y-6">
+        <div className="flex items-center gap-3 border-b border-[#0F2C4C]/10 pb-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-500/10 text-sky-600">
+            <CloudUpload className="h-5 w-5" />
+          </div>
+          <div>
+            <h3 className="font-extrabold text-base text-[#0F2C4C]">
+              Configuration Cloudinary (Upload d&apos;Images)
+            </h3>
+            <p className="text-xs text-[#0F2C4C]/60">
+              Paramètres pour l&apos;upload haute performance des photos de créations, logos et bannières. En cas d&apos;absence de ces clés, le système bascule automatiquement sur Neon Object Storage.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[#0F2C4C]">
+              Cloudinary Cloud Name
+            </label>
+            <input
+              type="text"
+              value={settings.CLOUDINARY_CLOUD_NAME || ""}
+              onChange={(e) => handleChange("CLOUDINARY_CLOUD_NAME", e.target.value)}
+              placeholder="ex: dyxxxxxxx"
+              className="w-full rounded-xl border border-stone-300 px-3.5 py-2 text-xs font-mono font-medium focus:border-[#D96B27] focus:outline-hidden"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[#0F2C4C]">
+              Cloudinary API Key
+            </label>
+            <input
+              type="text"
+              value={settings.CLOUDINARY_API_KEY || ""}
+              onChange={(e) => handleChange("CLOUDINARY_API_KEY", e.target.value)}
+              placeholder="ex: 628986692437749"
+              className="w-full rounded-xl border border-stone-300 px-3.5 py-2 text-xs font-mono font-medium focus:border-[#D96B27] focus:outline-hidden"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[#0F2C4C]">
+              Cloudinary API Secret
+            </label>
+            <input
+              type="password"
+              value={settings.CLOUDINARY_API_SECRET || ""}
+              onChange={(e) => handleChange("CLOUDINARY_API_SECRET", e.target.value)}
+              placeholder="••••••••••••••••••••••••••••"
+              className="w-full rounded-xl border border-stone-300 px-3.5 py-2 text-xs font-mono font-medium focus:border-[#D96B27] focus:outline-hidden"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[#0F2C4C]">
+              Dossier Cloudinary (Folder racine)
+            </label>
+            <input
+              type="text"
+              value={settings.CLOUDINARY_UPLOAD_FOLDER || "KOMO-ART"}
+              onChange={(e) => handleChange("CLOUDINARY_UPLOAD_FOLDER", e.target.value)}
+              placeholder="KOMO-ART"
+              className="w-full rounded-xl border border-stone-300 px-3.5 py-2 text-xs font-mono font-medium focus:border-[#D96B27] focus:outline-hidden"
+            />
           </div>
         </div>
       </div>
