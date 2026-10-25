@@ -137,6 +137,7 @@ export function ImageUpload({
               src={value}
               alt="Aperçu"
               fill
+              unoptimized
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 400px"
             />

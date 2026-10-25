@@ -183,6 +183,7 @@ export function ProEnterpriseBannerModal({ stores }: ProEnterpriseBannerModalPro
                       src={activeStore.banner || "/images/hero-workshop.jpg"}
                       alt={activeStore.name}
                       fill
+                      unoptimized
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
@@ -195,6 +196,7 @@ export function ProEnterpriseBannerModal({ stores }: ProEnterpriseBannerModalPro
                             src={activeStore.logo || "/images/wood-chest.jpg"}
                             alt={activeStore.name}
                             fill
+                            unoptimized
                             className="object-cover"
                           />
                         </div>

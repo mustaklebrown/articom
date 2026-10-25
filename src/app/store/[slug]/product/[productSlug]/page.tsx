@@ -79,6 +79,7 @@ export default async function ProductDetailPage(props: {
                   alt={product.title}
                   fill
                   priority
+                  unoptimized
                   className="object-cover"
                 />
 
@@ -106,7 +107,7 @@ export default async function ProductDetailPage(props: {
                       key={idx}
                       className="relative h-20 w-20 shrink-0 rounded-2xl overflow-hidden border-2 border-white bg-white shadow-sm"
                     >
-                      <Image src={img} alt="" fill className="object-cover" />
+                      <Image src={img} alt="" fill unoptimized className="object-cover" />
                     </div>
                   ))}
                 </div>

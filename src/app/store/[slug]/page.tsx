@@ -74,6 +74,7 @@ export default async function StorePage(props: {
               alt={`Bannière de ${store.name}`}
               fill
               priority
+              unoptimized
               className="object-cover opacity-60"
             />
           ) : (
@@ -94,6 +95,7 @@ export default async function StorePage(props: {
                       src={store.logo}
                       alt={store.name}
                       fill
+                      unoptimized
                       className="object-cover"
                     />
                   ) : (
